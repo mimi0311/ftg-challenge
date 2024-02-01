@@ -1,38 +1,62 @@
 import React, { useState, useEffect } from 'react';
-import pokemonDetails from "../services/pokemonDetails.js";
+import { Link } from 'react-router-dom';
+import {pokemonListTen, pokemonDetails} from "../services/pokemonAPI.js";
+
+
 
 const PokemonList = () => {
     const [pokemons, setPokemons] = useState([]);
+    const [sortField, setSortField] = useState('number');
+    const [sortOrder, setSortOrder] = useState('asc');
 
     useEffect(() => {
-        (async () => {
+        const getPokemons = async () => {
             try {
-                const response = await fetch('https://pokeapi.co/api/v2/pokemon?limit=10');
-                const data = await response.json();
-
-                const pokemonData = await Promise.all(
-                    data.results.map(pokemon => pokemonDetails(pokemon.url))
+                const pokemonList = await pokemonListTen(10);
+                const pokemonDetailsList = await Promise.all(
+                    pokemonList.map(pokemon => pokemonDetails(pokemon.url))
                 );
-
-                setPokemons(pokemonData.filter(pokemon => pokemon !== null));
-            } catch (e) {
-                console.e('Error al obtener datos de la API de Pokémon:', e);
+                setPokemons(pokemonDetailsList.filter(pokemon => pokemon !== null));
+            } catch (error) {
+                console.error('Error fetching data from the Pokémon API: ', error);
             }
-        })();
+        };
+
+        getPokemons();
     }, []);
+
+    const sortPokemons = (a, b) => {
+        if (a[sortField] < b[sortField]) return sortOrder === 'asc' ? -1 : 1;
+        if (a[sortField] > b[sortField]) return sortOrder === 'asc' ? 1 : -1;
+        return 0;
+    };
 
 
     return (
         <div>
             <h1>Pokemon</h1>
+            <div>
+                <label>Sort by: </label>
+                <select onChange={(e) => setSortField(e.target.value)}>
+                    <option value="number">Number</option>
+                    <option value="weight">Weight</option>
+                    <option value="height">Height</option>
+                </select>
+                <select onChange={(e) => setSortOrder(e.target.value)}>
+                    <option value="asc">Ascending</option>
+                    <option value="desc">Descending</option>
+                </select>
+            </div>
             <ul>
-                {pokemons.map(pokemon => (
+                {pokemons.sort(sortPokemons).map(pokemon => (
                     <li key={pokemon.number}>
-                        <img src={pokemon.image} alt={pokemon.name}/>
-                        <p>Name: {pokemon.name}</p>
-                        <p>Number: {pokemon.number}</p>
-                        <p>Weight: {pokemon.weight}</p>
-                        <p>Height: {pokemon.height}</p>
+                        <Link to={`/pokemon/${pokemon.number}`}>
+                            <img src={pokemon.image1} alt={pokemon.name}/>
+                            <p>Name: {pokemon.name}</p>
+                            <p>Number: {pokemon.number}</p>
+                            <p>Weight: {pokemon.weight}</p>
+                            <p>Height: {pokemon.height}</p>
+                        </Link>
                     </li>
                 ))}
             </ul>
