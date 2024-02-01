@@ -2,18 +2,3 @@
 @tailwind components;
 @tailwind utilities;
 
-body {
-    background-image: url('public/bg-pokemon.jpg');
-    background-repeat: repeat;
-    background-size: 8% 25%;
-}
-@media screen and (max-width: 768px) {
-    body {
-        background-size: 3% 10%;
-    }
-}
-@media screen and (max-width: 480px) {
-    body {
-        background-size: 1% 1%;
-    }
-}

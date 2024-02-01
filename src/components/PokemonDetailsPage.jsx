@@ -46,8 +46,6 @@ const PokemonDetailsPage = () => {
                 Volver
             </Link>
         </div>
-
-
     )
 };
 export default PokemonDetailsPage;

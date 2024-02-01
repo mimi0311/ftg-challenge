@@ -33,7 +33,7 @@ const PokemonList = () => {
 
 
     return (
-        <div className="flex flex-col items-center w-full min-h-screen">
+        <div className="flex flex-col items-center w-full min-h-screen bg-[#FFE5D9]">
             <h1 className="text-5xl font-bold p-4 my-4 bg-[#D8E2DC] border rounded-3xl text-gray-900">Pokemon</h1>
             <div
                 className="flex flex-col md:flex-row items-center space-x-0 md:space-x-4 p-4 rounded my-4 bg-[#D8E2DC] border rounded-3xl text-[#9D8189]">
@@ -72,8 +72,6 @@ const PokemonList = () => {
                 ))}
             </ul>
         </div>
-
-
     );
 };
 
